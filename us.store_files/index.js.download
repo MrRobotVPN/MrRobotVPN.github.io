@@ -1,0 +1,78 @@
+"use strict";
+
+// Grab all elements with data-dropdown-content
+var dropdowns = document.querySelectorAll('[data-dropdown-content]'); // Cycle through each dropdown
+
+dropdowns.forEach(function (dropdown) {
+  // Grab the dropdown content
+  var dropdownContent = document.getElementById(dropdown.dataset.dropdownContent);
+  tippy(dropdown, {
+    theme: 'vital',
+    trigger: dropdown.dataset.dropdownHover === 'true' ? 'mouseenter click' : 'click',
+    arrow: false,
+    touch: true,
+    duration: 0,
+    placement: 'bottom-start',
+    allowHTML: true,
+    interactive: true,
+    content: dropdownContent.innerHTML
+  });
+});
+var mobileDrawer = document.getElementById('mobile-drawer');
+var mobileDrawerTogglers = document.getElementsByClassName('mobile-drawer-toggle'); // Loop through each toggler
+
+for (var i = 0; i < mobileDrawerTogglers.length; i++) {
+  mobileDrawerTogglers[i].addEventListener('click', function (event) {
+    event.stopPropagation(); // IF mobile drawer is open close it
+
+    if (!mobileDrawer.classList.contains('hidden')) {
+      mobileDrawer.classList.add('hidden');
+    } else {
+      mobileDrawer.classList.remove('hidden');
+    }
+  });
+}
+
+document.addEventListener('click', function (event) {
+  // If the clicked element does not contain the 'mobile-drawer-toggle' class or 'mobile-drawer' id
+  if (!event.target.classList.contains('mobile-drawer-toggle') && !(event.target.id === 'mobile-drawer')) {
+    // If any child of the target element is 'mobile-drawer'
+    if (event.target.closest('#mobile-drawer')) {// Do nothing
+    } else {
+      // Close the mobile drawer
+      mobileDrawer.classList.add('hidden');
+    }
+  }
+}); // Gifting package toggle
+
+var giftPackageToggle = document.getElementById('toggle-gift-package');
+
+if (giftPackageToggle) {
+  var giftPackageContent = document.getElementById('gift-package');
+  giftPackageContent.style.height = '0px'; // Get the <i> element within giftPackageToggle
+
+  var giftPackageToggleIcon = giftPackageToggle.querySelector('i');
+  giftPackageToggle.addEventListener('click', function (event) {
+    event.stopPropagation();
+
+    if (giftPackageContent.style.height === '0px') {
+      giftPackageContent.style.height = '230px';
+      giftPackageToggleIcon.classList.remove('fa-caret-down');
+      giftPackageToggleIcon.classList.add('fa-caret-up');
+    } else {
+      giftPackageContent.style.height = '0px';
+      giftPackageToggleIcon.classList.remove('fa-caret-up');
+      giftPackageToggleIcon.classList.add('fa-caret-down');
+    }
+  });
+} // All button or anchor tags with 'disabled' class
+
+
+var disabledButtons = document.querySelectorAll('a.disabled, button.disabled'); // Add click listener to them all
+
+disabledButtons.forEach(function (button) {
+  button.addEventListener('click', function (event) {
+    event.preventDefault();
+    event.stopPropagation();
+  });
+});
